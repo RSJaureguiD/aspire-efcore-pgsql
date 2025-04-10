@@ -35,6 +35,6 @@ public static class DbExtensions
             await using var transaction = await dbContext.Database.BeginTransactionAsync();
             await dbContext.Database.MigrateAsync();
             await transaction.CommitAsync();
-        }
+        });
     }
 }
