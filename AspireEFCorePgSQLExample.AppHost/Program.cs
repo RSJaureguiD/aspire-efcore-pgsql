@@ -1,6 +1,6 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var pgsqlPassword = builder.AddParameter("sql-password", secret: true);
+var pgsqlPassword = builder.AddParameter("pgsql-password", secret: true);
 
 var pgsql = builder.AddPostgres("pgsql", password: pgsqlPassword)
     .WithDataVolume();
