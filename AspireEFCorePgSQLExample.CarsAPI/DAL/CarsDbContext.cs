@@ -52,8 +52,7 @@ public class CarsDbContext : DbContext
                     .HasMaxLength(30);
                 eb.Property(x => x.ReleaseYear)
                     .HasColumnName("car_releaseyear")
-                    .IsRequired()
-                    .HasMaxLength(4);
+                    .IsRequired();
                 eb.Property(x => x.MakerGuid)
                     .HasColumnName("car_makerguid")
                     .IsRequired();
