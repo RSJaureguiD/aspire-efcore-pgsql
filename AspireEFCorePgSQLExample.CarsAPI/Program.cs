@@ -1,4 +1,8 @@
+using AspireEFCorePgSQLExample.CarsAPI.DAL;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddNpgsqlDbContext<CarsDbContext>("pgsqldb");
 
 // Add services to the container.
 
