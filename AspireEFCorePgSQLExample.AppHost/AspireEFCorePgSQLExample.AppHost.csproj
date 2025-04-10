@@ -16,4 +16,8 @@
     <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="9.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AspireEFCorePgSQLExample.CarsAPI\AspireEFCorePgSQLExample.CarsAPI.csproj" />
+  </ItemGroup>
+
 </Project>
