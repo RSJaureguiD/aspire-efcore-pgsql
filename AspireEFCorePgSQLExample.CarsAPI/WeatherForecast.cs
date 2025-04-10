@@ -1,4 +1,4 @@
-namespace CarsAPI
+namespace AspireEFCorePgSQLExample.CarsAPI
 {
     public class WeatherForecast
     {

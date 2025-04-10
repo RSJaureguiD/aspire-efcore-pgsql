@@ -1,0 +1,6 @@
+@AspireEFCorePgSQLExample.CarsAPI_HostAddress = http://localhost:5198
+
+GET {{AspireEFCorePgSQLExample.CarsAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

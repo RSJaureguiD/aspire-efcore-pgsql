@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace CarsAPI.Controllers
+namespace AspireEFCorePgSQLExample.CarsAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]

@@ -12,19 +12,19 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["CarsAPI/CarsAPI.csproj", "CarsAPI/"]
-RUN dotnet restore "./CarsAPI/CarsAPI.csproj"
+COPY ["AspireEFCorePgSQLExample.CarsAPI/AspireEFCorePgSQLExample.CarsAPI.csproj", "AspireEFCorePgSQLExample.CarsAPI/"]
+RUN dotnet restore "./AspireEFCorePgSQLExample.CarsAPI/AspireEFCorePgSQLExample.CarsAPI.csproj"
 COPY . .
-WORKDIR "/src/CarsAPI"
-RUN dotnet build "./CarsAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/AspireEFCorePgSQLExample.CarsAPI"
+RUN dotnet build "./AspireEFCorePgSQLExample.CarsAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Esta fase se usa para publicar el proyecto de servicio que se copiará en la fase final.
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./CarsAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./AspireEFCorePgSQLExample.CarsAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # Esta fase se usa en producción o cuando se ejecuta desde VS en modo normal (valor predeterminado cuando no se usa la configuración de depuración)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "CarsAPI.dll"]
+ENTRYPOINT ["dotnet", "AspireEFCorePgSQLExample.CarsAPI.dll"]
