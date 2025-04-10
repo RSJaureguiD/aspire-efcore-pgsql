@@ -6,7 +6,7 @@ public class Maker
     public string Name { get; set; }
     public string Country { get; set; }
 
-    public virtual IEnumerable<Car> Cars { get; set; } = Enumerable.Empty<Car>();
+    public virtual IList<Car> Cars { get; set; } = [];
 
     public Maker(Guid guid, string name, string country)
     {

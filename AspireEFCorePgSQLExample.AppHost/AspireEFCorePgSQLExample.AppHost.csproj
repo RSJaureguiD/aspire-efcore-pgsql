@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AspireEFCorePgSQLExample.CarsAPI\AspireEFCorePgSQLExample.CarsAPI.csproj" />
+    <ProjectReference Include="..\AspireEFCorePgSQLExample.MigrationService\AspireEFCorePgSQLExample.MigrationService.csproj" />
   </ItemGroup>
 
 </Project>

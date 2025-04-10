@@ -8,6 +8,11 @@ var pgsql = builder.AddPostgres("pgsql", password: pgsqlPassword)
 var pgsqldb = pgsql.AddDatabase("pgsqldb");
 
 builder.AddProject<Projects.AspireEFCorePgSQLExample_CarsAPI>("carsapi")
-    .WithReference(pgsqldb);
+    .WithReference(pgsqldb)
+    .WaitFor(pgsqldb);
+
+builder.AddProject<Projects.AspireEFCorePgSQLExample_MigrationService>("migrations")
+    .WithReference(pgsqldb)
+    .WaitFor(pgsqldb);
 
 builder.Build().Run();
