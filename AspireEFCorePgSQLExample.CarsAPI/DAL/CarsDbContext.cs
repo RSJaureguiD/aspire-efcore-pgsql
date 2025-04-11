@@ -82,6 +82,7 @@ public class CarsDbContext : DbContext
                     .WithMany(x => x.Cars)
                     .HasForeignKey(x => x.MakerGuid)
                     .HasConstraintName("cars_fk1_maker")
+                    .IsRequired()
                     .OnDelete(DeleteBehavior.Cascade);
                 eb.HasData(firstCar, secondCar);
             });

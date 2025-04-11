@@ -10,7 +10,7 @@ public class Car
     public DateTime? Insert { get; set; }
 
 
-    public virtual Maker? Maker { get; set; }
+    public Maker Maker { get; set; } = null!;
 
     public Car(Guid guid, string name, int releaseYear, Guid makerGuid)
     {

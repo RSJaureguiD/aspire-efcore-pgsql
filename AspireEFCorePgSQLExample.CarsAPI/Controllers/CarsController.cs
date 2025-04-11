@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AspireEFCorePgSQLExample.CarsAPI.DAL;
 using AspireEFCorePgSQLExample.CarsAPI.DAL.Models;
+using AspireEFCorePgSQLExample.CarsAPI.DTOs;
 
 namespace AspireEFCorePgSQLExample.CarsAPI.Controllers
 {
@@ -23,15 +19,53 @@ namespace AspireEFCorePgSQLExample.CarsAPI.Controllers
 
         // GET: api/Cars
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Car>>> GetCars()
+        public async Task<ActionResult<IEnumerable<GetCar>>> GetCars()
         {
-            return await _context.Cars.ToListAsync();
+            var cars = await _context.Cars.Include(x => x.Maker).ToListAsync();
+
+            try
+            {
+                var data = cars.Select(x => new GetCar(x.Guid, x.Name, x.ReleaseYear, new GetMaker(x.Maker!.Guid, x.Maker!.Name, x.Maker!.Country)));
+                return Ok(data.ToList());
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
         }
 
         // GET: api/Cars/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Car>> GetCar(Guid id)
+        public async Task<ActionResult<GetCar>> GetCar(Guid id)
         {
+            var car = _context.Cars.Include(x => x.Maker).Where(p => p.Guid == id).First();
+
+            if (car == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                return Ok(new GetCar(car.Guid, car.Name, car.ReleaseYear, new GetMaker(car.Maker!.Guid, car.Maker!.Name, car.Maker!.Country)));
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+
+        }
+
+        // PUT: api/Cars/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutCar(Guid id, PutCar data)
+        {
+            if (id != data.Guid)
+            {
+                return BadRequest();
+            }
+
             var car = await _context.Cars.FindAsync(id);
 
             if (car == null)
@@ -39,18 +73,9 @@ namespace AspireEFCorePgSQLExample.CarsAPI.Controllers
                 return NotFound();
             }
 
-            return car;
-        }
-
-        // PUT: api/Cars/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCar(Guid id, Car car)
-        {
-            if (id != car.Guid)
-            {
-                return BadRequest();
-            }
+            car.Name = data.Name;
+            car.ReleaseYear = data.ReleaseYear;
+            car.MakerGuid = data.MakerGuid;
 
             _context.Entry(car).State = EntityState.Modified;
 
@@ -76,12 +101,30 @@ namespace AspireEFCorePgSQLExample.CarsAPI.Controllers
         // POST: api/Cars
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Car>> PostCar(Car car)
+        public async Task<ActionResult<GetCar>> PostCar(PostCar data)
         {
-            _context.Cars.Add(car);
-            await _context.SaveChangesAsync();
+            var car = new Car(Guid.NewGuid(), data.Name, data.ReleaseYear, data.MakerGuid);
 
-            return CreatedAtAction("GetCar", new { id = car.Guid }, car);
+            _context.Cars.Add(car);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+
+            var newCar = _context.Cars.Include(x => x.Maker).Where(p => p.Guid == car.Guid).FirstOrDefault();
+
+            if (newCar is null)
+            {
+                return Problem("We couldn't find the created car");
+            }
+
+            var result = new GetCar(newCar.Guid, newCar.Name, newCar.ReleaseYear, new GetMaker(newCar.Maker!.Guid, newCar.Maker!.Name, newCar.Maker!.Country));
+
+            return CreatedAtAction("GetCar", new { id = car.Guid }, result);
         }
 
         // DELETE: api/Cars/5
