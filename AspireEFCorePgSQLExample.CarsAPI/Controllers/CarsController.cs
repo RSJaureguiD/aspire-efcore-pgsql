@@ -51,7 +51,8 @@ namespace AspireEFCorePgSQLExample.CarsAPI.Controllers
             }
             catch (Exception ex)
             {
-                return Problem(ex.Message);
+                _logger.LogError(ex, "An error occurred while retrieving the car with ID {CarId}.", id);
+                return Problem("An unexpected error occurred. Please try again later.");
             }
 
         }
