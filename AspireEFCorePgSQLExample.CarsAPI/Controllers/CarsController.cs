@@ -38,7 +38,7 @@ namespace AspireEFCorePgSQLExample.CarsAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetCar>> GetCar(Guid id)
         {
-            var car = _context.Cars.Include(x => x.Maker).Where(p => p.Guid == id).First();
+            var car = await _context.Cars.Include(x => x.Maker).Where(p => p.Guid == id).FirstOrDefaultAsync();
 
             if (car == null)
             {
