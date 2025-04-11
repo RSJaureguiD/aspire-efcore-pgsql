@@ -28,7 +28,6 @@ public class Worker(
             var dbContext = scope.ServiceProvider.GetRequiredService<CarsDbContext>();
 
             await RunMigrationAsync(dbContext, cancellationToken);
-            // await SeedDataAsync(dbContext, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -46,28 +45,6 @@ public class Worker(
         {
             // Run migration in a transaction to avoid partial migration if it fails.
             await dbContext.Database.MigrateAsync(cancellationToken);
-        });
-    }
-
-    private static async Task SeedDataAsync(CarsDbContext dbContext, CancellationToken cancellationToken)
-    {
-        Maker firstMaker = new(Guid.NewGuid(), "Audi", "Germany");
-        Maker secondMaker = new(Guid.NewGuid(), "BMW", "Germany");
-
-        Car firstCar = new(Guid.NewGuid(), "Audi R8", 2006, firstMaker.Guid);
-        Car secondCar = new(Guid.NewGuid(), "BMW E46 M3", 2001, secondMaker.Guid);
-
-        var strategy = dbContext.Database.CreateExecutionStrategy();
-        await strategy.ExecuteAsync(async () =>
-        {
-            // Seed the database
-            await using var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
-            await dbContext.Makers.AddAsync(firstMaker, cancellationToken);
-            await dbContext.Makers.AddAsync(secondMaker, cancellationToken);
-            await dbContext.Cars.AddAsync(firstCar, cancellationToken);
-            await dbContext.Cars.AddAsync(secondCar, cancellationToken);
-            await dbContext.SaveChangesAsync(cancellationToken);
-            await transaction.CommitAsync(cancellationToken);
         });
     }
 }
