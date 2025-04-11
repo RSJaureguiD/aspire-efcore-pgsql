@@ -16,6 +16,8 @@ public class CarsDbContext : DbContext
     {
         modelBuilder.HasDefaultSchema("carsapi");
 
+        Maker firstMaker = new(new Guid("faed6037-313d-439b-bd59-991827c3a6ed"), "Audi", "Germany");
+        Maker secondMaker = new(new Guid("ccdfb6b5-2109-4b40-9c36-c0d2d0d3755d"), "BMW", "Germany");
         modelBuilder.Entity<Maker>(
             eb => 
             {
@@ -41,8 +43,12 @@ public class CarsDbContext : DbContext
                     .HasColumnName("maker_insert")
                     .ValueGeneratedOnAdd()
                     .HasDefaultValueSql("NOW()");
+                eb.HasData(firstMaker, secondMaker);
             });
 
+
+        Car firstCar = new(new Guid("20028c57-8d63-47bf-89c9-197781983536"), "Audi R8", 2006, new Guid("faed6037-313d-439b-bd59-991827c3a6ed"));
+        Car secondCar = new(new Guid("4a5d94a3-dba4-447c-bb9a-fea2077de64a"), "BMW E46 M3", 2001, new Guid("ccdfb6b5-2109-4b40-9c36-c0d2d0d3755d"));
         modelBuilder.Entity<Car>(
             eb =>
             {
@@ -76,8 +82,8 @@ public class CarsDbContext : DbContext
                     .WithMany(x => x.Cars)
                     .HasForeignKey(x => x.MakerGuid)
                     .HasConstraintName("cars_fk1_maker")
-                    .IsRequired()
                     .OnDelete(DeleteBehavior.Cascade);
+                eb.HasData(firstCar, secondCar);
             });
     }
 }
