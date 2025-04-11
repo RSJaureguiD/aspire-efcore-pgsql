@@ -16,10 +16,12 @@ namespace AspireEFCorePgSQLExample.CarsAPI.Controllers
     public class MakersController : ControllerBase
     {
         private readonly CarsDbContext _context;
+        private readonly ILogger<MakersController> _logger;
 
-        public MakersController(CarsDbContext context)
+        public MakersController(CarsDbContext context, ILogger<MakersController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: api/Makers
