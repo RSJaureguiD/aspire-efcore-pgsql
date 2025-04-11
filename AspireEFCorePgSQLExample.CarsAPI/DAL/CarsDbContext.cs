@@ -26,13 +26,21 @@ public class CarsDbContext : DbContext
                     .HasName("makers_ak1_name");
                 eb.Property(x => x.Guid)
                     .HasColumnName("maker_guid")
-                    .IsRequired();
+                    .IsRequired()
+                    .ValueGeneratedOnAdd();
                 eb.Property(x => x.Name)
                     .HasColumnName("maker_name")
                     .IsRequired();
                 eb.Property(x => x.Country)
                     .HasColumnName("maker_country")
                     .IsRequired();
+                eb.Property(x => x.Update)
+                    .HasColumnName("maker_update")
+                    .ValueGeneratedOnAddOrUpdate();
+                eb.Property(x => x.Insert)
+                    .HasColumnName("maker_insert")
+                    .ValueGeneratedOnAdd()
+                    .HasDefaultValueSql("NOW()");
             });
 
         modelBuilder.Entity<Car>(
@@ -45,7 +53,8 @@ public class CarsDbContext : DbContext
                     .HasName("cars_ak1_name_maker");
                 eb.Property(x => x.Guid)
                     .HasColumnName("car_guid")
-                    .IsRequired();
+                    .IsRequired()
+                    .ValueGeneratedOnAdd();
                 eb.Property(x => x.Name)
                     .HasColumnName("car_name")
                     .IsRequired()
@@ -58,12 +67,11 @@ public class CarsDbContext : DbContext
                     .IsRequired();
                 eb.Property(x => x.Update)
                     .HasColumnName("car_update")
-                    .IsRequired()
                     .ValueGeneratedOnAddOrUpdate();
                 eb.Property(x => x.Insert)
                     .HasColumnName("car_insert")
-                    .IsRequired()
-                    .ValueGeneratedOnAdd();
+                    .ValueGeneratedOnAdd()
+                    .HasDefaultValueSql("NOW()");
                 eb.HasOne(x => x.Maker)
                     .WithMany(x => x.Cars)
                     .HasForeignKey(x => x.MakerGuid)

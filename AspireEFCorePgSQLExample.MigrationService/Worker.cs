@@ -54,8 +54,8 @@ public class Worker(
         Maker firstMaker = new(Guid.NewGuid(), "Audi", "Germany");
         Maker secondMaker = new(Guid.NewGuid(), "BMW", "Germany");
 
-        Car firstCar = new(Guid.NewGuid(), "Audi R8", 2006, firstMaker.Guid, DateTime.Now, DateTime.Now);
-        Car secondCar = new(Guid.NewGuid(), "BMW E46 M3", 2001, secondMaker.Guid, DateTime.Now, DateTime.Now);
+        Car firstCar = new(Guid.NewGuid(), "Audi R8", 2006, firstMaker.Guid);
+        Car secondCar = new(Guid.NewGuid(), "BMW E46 M3", 2001, secondMaker.Guid);
 
         var strategy = dbContext.Database.CreateExecutionStrategy();
         await strategy.ExecuteAsync(async () =>

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AspireEFCorePgSQLExample.CarsAPI.Migrations
 {
     [DbContext(typeof(CarsDbContext))]
-    [Migration("20250410190812_initial")]
-    partial class initial
+    [Migration("20250411022642_AddUpdateTriggers")]
+    partial class AddUpdateTriggers
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,10 +33,11 @@ namespace AspireEFCorePgSQLExample.CarsAPI.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("car_guid");
 
-                    b.Property<DateTime>("Insert")
+                    b.Property<DateTime?>("Insert")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("car_insert");
+                        .HasColumnName("car_insert")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<Guid>("MakerGuid")
                         .HasColumnType("uuid")
@@ -52,7 +53,7 @@ namespace AspireEFCorePgSQLExample.CarsAPI.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("car_releaseyear");
 
-                    b.Property<DateTime>("Update")
+                    b.Property<DateTime?>("Update")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("car_update");
@@ -78,10 +79,21 @@ namespace AspireEFCorePgSQLExample.CarsAPI.Migrations
                         .HasColumnType("text")
                         .HasColumnName("maker_country");
 
+                    b.Property<DateTime?>("Insert")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("maker_insert")
+                        .HasDefaultValueSql("NOW()");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("maker_name");
+
+                    b.Property<DateTime?>("Update")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("maker_update");
 
                     b.HasKey("Guid")
                         .HasName("makers_pk");
