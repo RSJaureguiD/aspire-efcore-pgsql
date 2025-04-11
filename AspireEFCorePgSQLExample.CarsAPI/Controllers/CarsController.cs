@@ -115,7 +115,7 @@ namespace AspireEFCorePgSQLExample.CarsAPI.Controllers
                 return Problem(ex.Message);
             }
 
-            var newCar = _context.Cars.Include(x => x.Maker).Where(p => p.Guid == car.Guid).FirstOrDefault();
+            var newCar = await _context.Cars.Include(x => x.Maker).Where(p => p.Guid == car.Guid).FirstOrDefaultAsync();
 
             if (newCar is null)
             {
