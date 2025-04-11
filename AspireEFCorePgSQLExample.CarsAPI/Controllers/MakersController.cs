@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AspireEFCorePgSQLExample.CarsAPI.DAL;
 using AspireEFCorePgSQLExample.CarsAPI.DAL.Models;
+using AspireEFCorePgSQLExample.CarsAPI.DTOs;
 
 namespace AspireEFCorePgSQLExample.CarsAPI.Controllers
 {
@@ -23,14 +24,24 @@ namespace AspireEFCorePgSQLExample.CarsAPI.Controllers
 
         // GET: api/Makers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Maker>>> GetMakers()
+        public async Task<ActionResult<IEnumerable<GetMaker>>> GetMakers()
         {
-            return await _context.Makers.ToListAsync();
+            var makers = await _context.Makers.ToListAsync();
+
+            try
+            {
+                var data = makers.Select(x => new GetMaker(x.Guid, x.Name, x.Country));
+                return Ok(data.ToList());
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
         }
 
         // GET: api/Makers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Maker>> GetMaker(Guid id)
+        public async Task<ActionResult<GetMaker>> GetMaker(Guid id)
         {
             var maker = await _context.Makers.FindAsync(id);
 
@@ -39,18 +50,35 @@ namespace AspireEFCorePgSQLExample.CarsAPI.Controllers
                 return NotFound();
             }
 
-            return maker;
+            try
+            {
+                return Ok(new GetMaker(maker.Guid, maker.Name, maker.Country));
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
         }
 
         // PUT: api/Makers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMaker(Guid id, Maker maker)
+        public async Task<IActionResult> PutMaker(Guid id, PutMaker data)
         {
-            if (id != maker.Guid)
+            if (id != data.Guid)
             {
                 return BadRequest();
             }
+
+            var maker = await _context.Makers.FindAsync(id);
+
+            if (maker == null)
+            {
+                return NotFound();
+            }
+
+            maker.Name = data.Name;
+            maker.Country = data.Country;
 
             _context.Entry(maker).State = EntityState.Modified;
 
@@ -76,12 +104,23 @@ namespace AspireEFCorePgSQLExample.CarsAPI.Controllers
         // POST: api/Makers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Maker>> PostMaker(Maker maker)
+        public async Task<ActionResult<GetMaker>> PostMaker(PostMaker data)
         {
-            _context.Makers.Add(maker);
-            await _context.SaveChangesAsync();
+            var maker = new Maker(Guid.NewGuid(), data.Name, data.Country);
 
-            return CreatedAtAction("GetMaker", new { id = maker.Guid }, maker);
+            _context.Makers.Add(maker);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+
+            var result = new GetMaker(maker.Guid, maker.Name, maker.Country);
+
+            return CreatedAtAction("GetMaker", new { id = maker.Guid }, result);
         }
 
         // DELETE: api/Makers/5

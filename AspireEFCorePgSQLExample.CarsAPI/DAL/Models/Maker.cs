@@ -8,7 +8,7 @@ public class Maker
     public DateTime? Update { get; set; }
     public DateTime? Insert { get; set; }
 
-    public virtual IList<Car> Cars { get; set; } = new List<Car>();
+    public IEnumerable<Car> Cars { get; } = new List<Car>();
 
     public Maker(Guid guid, string name, string country)
     {
