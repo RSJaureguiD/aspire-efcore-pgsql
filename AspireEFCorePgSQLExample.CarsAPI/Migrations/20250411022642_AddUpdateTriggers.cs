@@ -64,7 +64,7 @@ namespace AspireEFCorePgSQLExample.CarsAPI.Migrations
             DROP FUNCTION IF EXISTS carsapi.cars_syncupdated();
             DROP TRIGGER IF EXISTS makers_syncupdated_insert ON carsapi.makers;
             DROP TRIGGER IF EXISTS makers_syncupdated_update ON carsapi.makers;
-            DROP FUNCTION IF EXISTS makers_syncupdated();"
+            DROP FUNCTION IF EXISTS carsapi.makers_syncupdated();"
             );
         }
     }
