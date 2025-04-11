@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-AspireEFCorePgSQLExample.MigrationService-b5001030-a5e3-4d52-a392-d647e14cf3b3</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AspireEFCorePgSQLExample.CarsAPI\AspireEFCorePgSQLExample.CarsAPI.csproj" />
+    <ProjectReference Include="..\AspireEFCorePgSQLExample.ServiceDefaults\AspireEFCorePgSQLExample.ServiceDefaults.csproj" />
+  </ItemGroup>
+</Project>

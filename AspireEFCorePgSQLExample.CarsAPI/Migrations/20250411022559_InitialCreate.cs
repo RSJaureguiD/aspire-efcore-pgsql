@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AspireEFCorePgSQLExample.CarsAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,7 +21,9 @@ namespace AspireEFCorePgSQLExample.CarsAPI.Migrations
                 {
                     maker_guid = table.Column<Guid>(type: "uuid", nullable: false),
                     maker_name = table.Column<string>(type: "text", nullable: false),
-                    maker_country = table.Column<string>(type: "text", nullable: false)
+                    maker_country = table.Column<string>(type: "text", nullable: false),
+                    maker_update = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    maker_insert = table.Column<DateTime>(type: "timestamp with time zone", nullable: true, defaultValueSql: "NOW()")
                 },
                 constraints: table =>
                 {
@@ -38,8 +40,8 @@ namespace AspireEFCorePgSQLExample.CarsAPI.Migrations
                     car_name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     car_releaseyear = table.Column<int>(type: "integer", nullable: false),
                     car_makerguid = table.Column<Guid>(type: "uuid", nullable: false),
-                    car_update = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    car_insert = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    car_update = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    car_insert = table.Column<DateTime>(type: "timestamp with time zone", nullable: true, defaultValueSql: "NOW()")
                 },
                 constraints: table =>
                 {
