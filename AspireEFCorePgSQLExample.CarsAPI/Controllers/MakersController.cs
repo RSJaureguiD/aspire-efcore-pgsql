@@ -12,47 +12,47 @@ namespace AspireEFCorePgSQLExample.CarsAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CarsController : ControllerBase
+    public class MakersController : ControllerBase
     {
         private readonly CarsDbContext _context;
 
-        public CarsController(CarsDbContext context)
+        public MakersController(CarsDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Cars
+        // GET: api/Makers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Car>>> GetCars()
+        public async Task<ActionResult<IEnumerable<Maker>>> GetMakers()
         {
-            return await _context.Cars.ToListAsync();
+            return await _context.Makers.ToListAsync();
         }
 
-        // GET: api/Cars/5
+        // GET: api/Makers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Car>> GetCar(Guid id)
+        public async Task<ActionResult<Maker>> GetMaker(Guid id)
         {
-            var car = await _context.Cars.FindAsync(id);
+            var maker = await _context.Makers.FindAsync(id);
 
-            if (car == null)
+            if (maker == null)
             {
                 return NotFound();
             }
 
-            return car;
+            return maker;
         }
 
-        // PUT: api/Cars/5
+        // PUT: api/Makers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCar(Guid id, Car car)
+        public async Task<IActionResult> PutMaker(Guid id, Maker maker)
         {
-            if (id != car.Guid)
+            if (id != maker.Guid)
             {
                 return BadRequest();
             }
 
-            _context.Entry(car).State = EntityState.Modified;
+            _context.Entry(maker).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace AspireEFCorePgSQLExample.CarsAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CarExists(id))
+                if (!MakerExists(id))
                 {
                     return NotFound();
                 }
@@ -73,36 +73,36 @@ namespace AspireEFCorePgSQLExample.CarsAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Cars
+        // POST: api/Makers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Car>> PostCar(Car car)
+        public async Task<ActionResult<Maker>> PostMaker(Maker maker)
         {
-            _context.Cars.Add(car);
+            _context.Makers.Add(maker);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCar", new { id = car.Guid }, car);
+            return CreatedAtAction("GetMaker", new { id = maker.Guid }, maker);
         }
 
-        // DELETE: api/Cars/5
+        // DELETE: api/Makers/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCar(Guid id)
+        public async Task<IActionResult> DeleteMaker(Guid id)
         {
-            var car = await _context.Cars.FindAsync(id);
-            if (car == null)
+            var maker = await _context.Makers.FindAsync(id);
+            if (maker == null)
             {
                 return NotFound();
             }
 
-            _context.Cars.Remove(car);
+            _context.Makers.Remove(maker);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool CarExists(Guid id)
+        private bool MakerExists(Guid id)
         {
-            return _context.Cars.Any(e => e.Guid == id);
+            return _context.Makers.Any(e => e.Guid == id);
         }
     }
 }
