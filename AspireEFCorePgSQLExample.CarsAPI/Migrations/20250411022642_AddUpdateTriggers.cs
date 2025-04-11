@@ -59,9 +59,9 @@ namespace AspireEFCorePgSQLExample.CarsAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(@"
-            DROP TRIGGER IF EXISTS car_syncupdated_insert ON carsapi.cars;
-            DROP TRIGGER IF EXISTS car_syncupdated_update ON carsapi.cars;
-            DROP FUNCTION IF EXISTS car_syncupdated();
+            DROP TRIGGER IF EXISTS cars_syncupdated_insert ON carsapi.cars;
+            DROP TRIGGER IF EXISTS cars_syncupdated_update ON carsapi.cars;
+            DROP FUNCTION IF EXISTS cars_syncupdated();
             DROP TRIGGER IF EXISTS makers_syncupdated_insert ON carsapi.makers;
             DROP TRIGGER IF EXISTS makers_syncupdated_update ON carsapi.makers;
             DROP FUNCTION IF EXISTS makers_syncupdated();"
