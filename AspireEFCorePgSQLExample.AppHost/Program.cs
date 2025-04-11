@@ -3,7 +3,8 @@ var builder = DistributedApplication.CreateBuilder(args);
 var pgsqlPassword = builder.AddParameter("pgsql-password", secret: true);
 
 var pgsql = builder.AddPostgres("pgsql", password: pgsqlPassword)
-    .WithDataVolume(name: "aspire-efcore-pgsql-vol");
+    .WithDataVolume(name: "aspire-efcore-pgsql-vol")
+    .WithPgAdmin();
 
 var pgsqldb = pgsql.AddDatabase("pgsqldb");
 

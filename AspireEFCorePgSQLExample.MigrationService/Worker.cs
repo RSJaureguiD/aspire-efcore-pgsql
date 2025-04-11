@@ -28,7 +28,7 @@ public class Worker(
             var dbContext = scope.ServiceProvider.GetRequiredService<CarsDbContext>();
 
             await RunMigrationAsync(dbContext, cancellationToken);
-            await SeedDataAsync(dbContext, cancellationToken);
+            // await SeedDataAsync(dbContext, cancellationToken);
         }
         catch (Exception ex)
         {
